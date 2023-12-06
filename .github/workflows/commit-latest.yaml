@@ -17,9 +17,9 @@ jobs:
         with:
           path: ovirt-ansible-collection
       - name: Set Git user to github-actions
-        uses: gotmax23/set-bot-git-user-action@v1.1.0
+        uses: gotmax23/set-bot-git-user-action@v1.2.0
         with:
-          global: true
+          working-directory: ovirt-ansible-collection
       - name: Build collection tree
         run: |
           cd ..
