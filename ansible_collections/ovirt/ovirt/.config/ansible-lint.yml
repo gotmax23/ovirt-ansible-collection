@@ -1,0 +1,18 @@
+skip_list:
+ - ignore-errors
+ - var-spacing
+ - var-naming
+ - experimental
+ - package-latest
+ - name[casing]
+ - name[template]
+warn_list:
+ - no-changed-when
+ - fqcn-builtins
+ - template-instead-of-copy
+ - jinja[invalid]
+ - fqcn[action-core]
+ - fqcn[action]
+ - name[missing]
+ - deprecated-module
+ - command-instead-of-module

@@ -1,0 +1,42 @@
+---
+name: Create a renamed ansible_collections tree
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build_and_push:
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: ovirt-ansible-collection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ovirt-ansible-collection
+      - name: Set Git user to github-actions
+        uses: gotmax23/set-bot-git-user-action@v1.2.0
+        with:
+          working-directory: ovirt-ansible-collection
+      - name: Build collection tree
+        run: |
+          cd ..
+          cp -r ovirt-ansible-collection workdir
+          cd workdir
+          rm -rf .git ansible_collections
+          ./build.sh rename ovirt
+      - name: Copy collection tree
+        run: |
+          rm -rf ansible_collections
+          mkdir -p ansible_collections/ovirt
+          cp -r ../workdir ansible_collections/ovirt/ovirt
+      - name: Commit and push
+        run: |
+          git add ansible_collections
+          if ! git diff-index --quiet HEAD ansible_collections; then
+              git commit -m "commit ansible_collections/ovirt/ovirt tree" -m "[skip ci]"
+              git pull
+              git push origin
+          fi
